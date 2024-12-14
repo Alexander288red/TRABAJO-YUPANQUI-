@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${trabajador.id != null ? 'Editar Trabajador' : 'Agregar Nuevo Trabajador'}"></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            animation: fadeInBackground 1.5s ease-in-out;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            animation: slideInContainer 1s ease-in-out;
+        }
+        h1 {
+            color: #d63384; /* Color rosa suave */
+            animation: bounceInTitle 1.5s;
+        }
+        .form-control {
+            border-radius: 5px;
+        }
+        .btn-primary {
+            background-color: #d63384; /* Color rosa suave */
+            border: none;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #c8237a; /* Color rosa más oscuro al pasar el mouse */
+            transform: scale(1.05);
+        }
+        @keyframes fadeInBackground {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        @keyframes slideInContainer {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        @keyframes bounceInTitle {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-20px);
+            }
+            60% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5 animate__animated animate__fadeIn">
+        <h1 class="text-center mb-4 animate__animated animate__bounceIn" th:text="${trabajador.id != null ? 'Editar Trabajador' : 'Agregar Nuevo Trabajador'}"></h1>
+        <form th:action="${trabajador.id != null ? '/trabajadores/editar/' + trabajador.id : '/trabajadores/nuevo'}" method="post">
+            <input type="hidden" th:value="${trabajador.id}" name="id"/>
+
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" id="nombre" name="nombre" th:value="${trabajador.nombre}" class="form-control animate__animated animate__fadeInUp" placeholder="Ingresa el nombre" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="apellidoPaterno" class="form-label">Apellido Paterno</label>
+                <input type="text" id="apellidoPaterno" name="apellido_paterno" th:value="${trabajador.apellido_paterno}" class="form-control animate__animated animate__fadeInUp" placeholder="Ingresa el apellido paterno" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="apellidoMaterno" class="form-label">Apellido Materno</label>
+                <input type="text" id="apellidoMaterno" name="apellido_materno" th:value="${trabajador.apellido_materno}" class="form-control animate__animated animate__fadeInUp" placeholder="Ingresa el apellido materno" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="numeroDocumento" class="form-label">Número de Documento</label>
+                <input type="text" id="numeroDocumento" name="numero_documento" th:value="${trabajador.numero_documento}" class="form-control animate__animated animate__fadeInUp" placeholder="Ingresa el número de documento" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
+                <input type="date" id="fechaNacimiento" name="fecha_nacimiento" th:value="${trabajador.fecha_nacimiento}" class="form-control animate__animated animate__fadeInUp" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="direccion" class="form-label">Dirección</label>
+                <input type="text" id="direccion" name="direccion" th:value="${trabajador.direccion}" class="form-control animate__animated animate__fadeInUp" placeholder="Ingresa la dirección" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="mesesTrabajados" class="form-label">Meses Trabajados</label>
+                <input type="number" id="mesesTrabajados" name="meses_trabajados" th:value="${trabajador.meses_trabajados}" class="form-control animate__animated animate__fadeInUp" placeholder="Ingresa los meses trabajados" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="tipoSeguro">Tipo Seguro:</label><br/>
+                <select id="tipoSeguro" name="tipo_seguro" class="form-select animate__animated animate__fadeInUp">
+                    <option value="" disabled ${trabajador.tipo_seguro == null ? 'selected' : ''}>Seleccione tipo seguro</option>  
+                    <option value="ESSALUD" ${'ESSALUD'.equals(trabajador.tipo_seguro) ? 'selected' : ''}>ESSALUD</option>  
+                    <option value="EPS" ${'EPS'.equals(trabajador.tipo_seguro) ? 'selected' : ''}>EPS</option>  
+                </select><br/>
+            </div>
+
+            <div class="mb-3">
+                <label for='sueldo' class='form-label'>Sueldo:</label><br/>
+                <input type='number' step='0.01' id='sueldo' name='sueldo' th:value='${trabajador.sueldo}' class='form-control animate__animated animate__fadeInUp' required/><br/>
+            </div>
+
+            <div class='text-center'>
+                <button type='submit' class='btn btn-primary animate__animated animate__pulse'>Guardar Trabajador</button><br/>
+            </div>
+
+        </form>
+
+        <a href="/trabajadores" class="animate__animated animate__fadeInUp">Volver a la lista de trabajadores</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
